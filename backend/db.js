@@ -95,5 +95,5 @@ module.exports = {
     PropertiesModel: PropertiesModel,
     PaymentModel: PaymentModel,
     RemindersModel: RemindersModel,
-    DocumentModel: DocumentModel
+    DocumentModel: DocumentModel,
 }
