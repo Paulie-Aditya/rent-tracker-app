@@ -2,6 +2,7 @@ const express = require("express");
 const { mongoose } = require("mongoose");
 const dotenv = require("dotenv")
 const { tenantRouter } = require("./routes/tenant")
+const db = require("./db")
 
 
 const app = express();

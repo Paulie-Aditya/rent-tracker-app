@@ -28,29 +28,29 @@ const Landlord = new Schema({
 
 const Properties = new Schema({
     address: String,
-    ownedBy: {type:ObjectId, ref: Landlord},
-    rentedBy: {type: ObjectId, ref: Lease},
+    ownedBy: {type: ObjectId, ref: 'landlords'},
     amount: Number
 })
 
 const Lease = new Schema({
-    ownedBy: {type: ObjectId, ref: Landlord},
-    agreedBy: [{type: ObjectId, ref: Tenant}], // can have multiple tenants,
-    propertyId: {type: ObjectId, ref: Properties},
+    owned_By: {type: ObjectId, ref: 'landlords'},
+    agreedBy: [{type: ObjectId, ref: 'tenants'}], // can have multiple tenants,
+    propertyId: {type: ObjectId, ref: 'properties'},
     startDate: Date,
     endDate: Date,
     monthlyRent: Number,
     dueDate: Number, // e.g. 1 = 1st of each month
     isActive: { type: Boolean, default: true },
-    document: {type: ObjectId, ref: Document}
 })
 
+
+
 const Payments = new Schema({
-    leaseId: {type: ObjectId, ref: Lease},
+    leaseId: {type: ObjectId, ref: 'leases'},
     amount: Number,
     type: {type: String, enum: ["Rent", "Refund", "Deposit"]},
-    paidBy: {type: ObjectId, ref: Tenant},
-    paidTo: {type: ObjectId, ref: Landlord},
+    paidBy: {type: ObjectId, ref: 'tenants'},
+    paidTo: {type: ObjectId, ref: 'landlords'},
     transactionId: String,
     status: {type: String, enum: ["Pending", "Completed", "Failed"]}
 
@@ -61,7 +61,7 @@ const Reminders = new Schema({
         id: {type: ObjectId, required: true},
         role: {type: String, enum: ["TENANT", "LANDLORD"]}
     },  // depending on user id, we can customize the reminder
-    leaseId: {type: ObjectId, ref: Lease},
+    leaseId: {type: ObjectId, ref: 'leases'},
     type: {type: String, enum:["PAYMENT_DUE", "DOCUMENT_EXPIRY"]},
     date: Date,
     isSent: {type: Boolean, default: false}
@@ -69,7 +69,7 @@ const Reminders = new Schema({
 
 
 const Document = new Schema({
-    leaseId: {type: ObjectId, ref: Lease},
+    leaseId: {type: ObjectId, ref: 'leases'},
     uploadedBy: {
         id: {type: ObjectId, required: true},
         role: {type: String, enum: ["TENANT", "LANDLORD"]}
