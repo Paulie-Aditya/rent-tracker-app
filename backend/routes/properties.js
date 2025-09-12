@@ -65,6 +65,30 @@ propertyRouter.post("/delete", landlordAuth, async(req, res) => {
     }
 })
 
+propertyRouter.put("/update", landlordAuth, async(req, res)=>{
+    try{
+
+        const {address, amount} = req.body
+
+        const property = await PropertiesModel.findOne({
+            ownedBy: req.id,
+        })
+
+        property.address = address;
+        property.amount = amount;
+
+        property.save();
+
+        res.send({
+            "message": "Property updated successfully!"
+        })
+    }
+    catch(err){
+        res.send({
+            "message":"Internal Server Error"
+        })
+    }
+})
 
 module.exports = {
     propertyRouter

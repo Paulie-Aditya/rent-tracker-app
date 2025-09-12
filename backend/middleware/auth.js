@@ -51,8 +51,27 @@ async function tenantAuth(req, res, next){
     }
 }
 
+async function isAuthenticated(req, res, next){
+    const token = req.headers.authorization;
+    try{
+        const user = await jwt.verify(token, JWT_SECRET);
+
+        if(!user){
+            throw new Error();
+        }
+        req.id = user.id;
+        req.role_id = user.role_id
+        next();
+    }
+    catch(err){
+        return res.status(401).send({
+            "message":"Unauthorized"
+        })
+    }
+}
 
 module.exports = {
     tenantAuth: tenantAuth,
-    landlordAuth: landlordAuth
+    landlordAuth: landlordAuth,
+    isAuthenticated: isAuthenticated
 }
