@@ -4,6 +4,7 @@ const dotenv = require("dotenv")
 const { tenantRouter } = require("./routes/tenant")
 const { landlordRouter } = require("./routes/landlord")
 const { propertyRouter } = require("./routes/properties")
+const { paymentRouter } = require("./routes/payment")
 const db = require("./db")
 
 
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 app.use("/tenant", tenantRouter)
 app.use("/landlord", landlordRouter)
 app.use("/properties", propertyRouter)
+app.use("/payments", paymentRouter)
 
 async function main(){
     await mongoose.connect(DATABASE_URL);
