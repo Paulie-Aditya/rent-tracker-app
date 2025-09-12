@@ -83,7 +83,8 @@ tenantRouter.post("/login", async(req, res) => {
         }
         
         const token = await jwt.sign({
-            email: user.email
+            id: user._id,
+            role_id: 2
         }, JWT_SECRET)
 
         return res.send({
