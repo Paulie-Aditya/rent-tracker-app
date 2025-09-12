@@ -2,7 +2,7 @@ const express = require("express")
 const Router = express.Router
 const {z}  = require("zod")
 const {LandlordModel} = require("../db")
-const { bcrypt }= require("bcrypt")
+const bcrypt= require("bcrypt")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
 dotenv.config()
@@ -66,7 +66,6 @@ landlordRouter.post("/login", async(req, res) => {
         })
     }
     const email = req.body.email;
-    const password = req.body.password;
 
     try{
         const user = await LandlordModel.findOne({
@@ -77,7 +76,7 @@ landlordRouter.post("/login", async(req, res) => {
             throw new Error();
         }
 
-        const isMatch = await bcrypt.compare(user.password, password);
+        const isMatch = await bcrypt.compare(req.body.password, user.password);
         if(!isMatch){
             throw new Error();
         }

@@ -2,7 +2,7 @@ const express = require("express")
 const Router = express.Router
 const {z}  = require("zod")
 const {TenantModel} = require("../db")
-const { bcrypt }= require("bcrypt")
+const bcrypt= require("bcrypt")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
 dotenv.config()
@@ -44,6 +44,7 @@ tenantRouter.post("/signup", async(req, res)=> {
         })
     }
     catch(err){
+        console.log(err)
         return res.send({
             "message": "Internal Server error."
         })
@@ -66,7 +67,6 @@ tenantRouter.post("/login", async(req, res) => {
         })
     }
     const email = req.body.email;
-    const password = req.body.password;
 
     try{
         const user = await TenantModel.findOne({
@@ -77,7 +77,7 @@ tenantRouter.post("/login", async(req, res) => {
             throw new Error();
         }
 
-        const isMatch = await bcrypt.compare(user.password, password);
+        const isMatch = await bcrypt.compare(req.body.password, user.password);
         if(!isMatch){
             throw new Error();
         }
@@ -92,6 +92,7 @@ tenantRouter.post("/login", async(req, res) => {
         })
     }
     catch(err){
+        console.log(err)
         return res.send({
             "message":"Incorrect credentials"
         })

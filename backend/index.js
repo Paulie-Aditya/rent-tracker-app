@@ -2,6 +2,7 @@ const express = require("express");
 const { mongoose } = require("mongoose");
 const dotenv = require("dotenv")
 const { tenantRouter } = require("./routes/tenant")
+const { landlordRouter } = require("./routes/landlord")
 const db = require("./db")
 
 
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/tenant", tenantRouter)
+app.use("/landlord", landlordRouter)
 
 async function main(){
     await mongoose.connect(DATABASE_URL);
