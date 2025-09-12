@@ -9,10 +9,11 @@ const propertyRouter = Router();
 
 propertyRouter.get("/", async(req, res)=>{
     try{
-        const properties = PropertiesModel.find();
+        const properties = await PropertiesModel.find();
         return res.send(properties)
     }
     catch(err){
+        console.log(err)
         res.status(500).send({
             "message":"Internal Server Error"
         })
@@ -36,6 +37,9 @@ propertyRouter.post("/create", landlordAuth, async(req, res) => {
             amount: req.body.amount,
             ownedBy: req.id
         })
+        res.send({
+            "message":"Property created successfully!"
+        })
     }
     catch(err){
         res.status(500).send({
@@ -49,6 +53,9 @@ propertyRouter.post("/delete", landlordAuth, async(req, res) => {
         // just need to send property id
         await PropertiesModel.deleteOne({
             _id: req.body.propertyId
+        })
+        res.send({
+            "message":"Property deleted successfully!"
         })
     }
     catch(err){
