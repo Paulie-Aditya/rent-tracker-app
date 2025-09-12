@@ -88,7 +88,7 @@ tenantRouter.post("/login", async(req, res) => {
 
         return res.send({
             "message":"Logged in successfully!",
-            "token":"token"
+            "token":token
         })
     }
     catch(err){
